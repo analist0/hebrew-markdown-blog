@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Hebrew Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap');
+
+/* RTL Support */
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[lang="he"] {
+  font-family: 'Assistant', system-ui, sans-serif;
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-dark-900 text-gray-100;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-500 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-600;
+  }
+}
+
+/* Custom Components */
+@layer components {
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+
+  /* Gradient Button */
+  .btn-gradient {
+    @apply bg-gradient-primary text-white font-bold py-3 px-8 transition-all duration-300;
+    @apply hover:shadow-lg hover:shadow-primary-500/50 hover:-translate-y-0.5;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-dark-800 rounded-none border-2 border-dark-700 p-6;
+    @apply transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply border-primary-500 shadow-xl shadow-primary-500/20;
+  }
+
+  /* Post Card */
+  .post-card {
+    @apply bg-dark-800 border-3 border-dark-700 overflow-hidden;
+    @apply transition-all duration-300 cursor-pointer;
+  }
+
+  .post-card:hover {
+    @apply border-primary-500 transform scale-105;
+    box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
+  }
+
+  /* Mobile Responsive Utilities */
+  .container-responsive {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Grid Responsive */
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10;
+  }
+
+  /* Typography Responsive */
+  .text-responsive-xl {
+    @apply text-3xl sm:text-4xl lg:text-5xl xl:text-6xl;
+  }
+
+  .text-responsive-lg {
+    @apply text-2xl sm:text-3xl lg:text-4xl;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+}
+
+/* Mobile-First Responsive Design */
+@layer utilities {
+  /* Hide on mobile */
+  .hide-mobile {
+    @apply hidden md:block;
+  }
+
+  /* Show only on mobile */
+  .show-mobile {
+    @apply block md:hidden;
+  }
+
+  /* Responsive Padding */
+  .padding-responsive {
+    @apply p-4 sm:p-6 lg:p-8 xl:p-10;
+  }
+
+  /* Responsive Margin */
+  .margin-responsive {
+    @apply m-4 sm:m-6 lg:m-8 xl:m-10;
+  }
+}
+
+/* Markdown Content Styles */
+.prose-blog {
+  @apply prose prose-invert max-w-none;
+  @apply prose-headings:font-heading prose-headings:text-gray-100;
+  @apply prose-p:text-gray-300 prose-p:leading-relaxed;
+  @apply prose-a:text-primary-400 prose-a:no-underline hover:prose-a:text-primary-300;
+  @apply prose-strong:text-primary-400;
+  @apply prose-code:text-accent-400 prose-code:bg-dark-800 prose-code:px-1 prose-code:rounded;
+  @apply prose-pre:bg-dark-800 prose-pre:border prose-pre:border-dark-700;
+  @apply prose-img:rounded-lg prose-img:shadow-xl;
+  @apply prose-blockquote:border-r-4 prose-blockquote:border-primary-500;
+  @apply prose-blockquote:text-gray-400 prose-blockquote:italic;
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #1e293b 0%,
+    #334155 20%,
+    #1e293b 40%,
+    #1e293b 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Tiptap Editor Custom Styles */
+.ProseMirror {
+  @apply min-h-[300px] p-4 focus:outline-none;
+  @apply text-gray-100 bg-dark-800;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-gray-500;
+  content: attr(data-placeholder);
+  float: right;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Mobile Menu Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.mobile-menu-enter {
+  animation: slideIn 0.3s ease-out;
+}
+
+.mobile-menu-exit {
+  animation: slideOut 0.3s ease-in;
+}
+
+/* Rating Stars */
+.rating-star {
+  @apply text-yellow-400 text-2xl cursor-pointer transition-transform;
+}
+
+.rating-star:hover {
+  @apply transform scale-125;
+}
+
+/* Comment Thread */
+.comment-thread {
+  @apply border-r-2 border-dark-700 pr-4 mr-4;
+}
+
+.comment-thread.nested {
+  @apply border-r-primary-500;
+}
