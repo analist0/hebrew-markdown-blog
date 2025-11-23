@@ -18,9 +18,6 @@ pydantic==2.10.4
 pydantic-settings==2.7.0
 email-validator==2.2.0
 
-# CORS and Security
-python-cors==1.0.0
-
 # Utils
 python-dateutil==2.9.0.post0
 markdown==3.7

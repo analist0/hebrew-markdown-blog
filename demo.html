@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇮🇱 Hebrew Markdown Blog - LIVE DEMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Assistant', sans-serif;
+            background: #0F172A;
+            color: #F1F5F9;
+            line-height: 1.7;
+        }
+        .status-banner {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        header {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            padding: 25px 0;
+            border-bottom: 3px solid #EC4899;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #EC4899, #F43F5E, #FB923C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Frank Ruhl Libre', serif;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            padding: 80px 20px;
+            text-align: center;
+            margin: 40px 0;
+            border: 3px solid #EC4899;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            font-family: 'Frank Ruhl Libre', serif;
+            background: linear-gradient(135deg, #EC4899, #F43F5E, #FB923C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+        .post-card {
+            background: #1E293B;
+            border: 3px solid #334155;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .post-card:hover {
+            border-color: #EC4899;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
+        }
+        .post-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #EC4899, #F43F5E, #FB923C);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+        .post-content {
+            padding: 30px;
+        }
+        .post-category {
+            background: linear-gradient(135deg, #EC4899, #F43F5E);
+            color: white;
+            padding: 6px 15px;
+            font-weight: 800;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .post-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #F1F5F9;
+            font-family: 'Frank Ruhl Libre', serif;
+        }
+        .post-excerpt {
+            color: #94A3B8;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .post-meta {
+            display: flex;
+            gap: 20px;
+            color: #64748B;
+            font-weight: 600;
+        }
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #EC4899, #F43F5E, #FB923C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .error {
+            background: #EF4444;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 40px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-banner">
+        🚀 LIVE DEMO - Backend: <span id="api-status">טוען...</span> | Frontend: ✅ עובד
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">⚡ BLOG</div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>המגזין הדיגיטלי המתקדם</h1>
+            <p style="font-size: 1.3rem; color: #CBD5E1; max-width: 700px; margin: 0 auto;">
+                פלטפורמה חזקה עם FastAPI + Next.js עם עיצוב Bold Magazine
+            </p>
+        </div>
+
+        <div id="posts-container">
+            <div class="loading">⏳ טוען פוסטים מה-API...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        // Check API status
+        async function checkAPI() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                document.getElementById('api-status').textContent = '✅ פועל';
+                document.getElementById('api-status').style.color = '#10B981';
+                return true;
+            } catch (error) {
+                document.getElementById('api-status').textContent = '❌ לא זמין';
+                document.getElementById('api-status').style.color = '#EF4444';
+                return false;
+            }
+        }
+
+        // Load posts
+        async function loadPosts() {
+            const container = document.getElementById('posts-container');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/posts`);
+                const data = await response.json();
+                
+                if (data.posts && data.posts.length > 0) {
+                    const emojis = ['🚀', '💡', '❤️'];
+                    container.innerHTML = `
+                        <h2 style="font-size: 2.5rem; margin: 60px 0 40px; font-family: 'Frank Ruhl Libre', serif; font-weight: 900;">
+                            📚 מאמרים אחרונים (${data.total})
+                        </h2>
+                        <div class="posts-grid">
+                            ${data.posts.map((post, idx) => `
+                                <div class="post-card" onclick="viewPost(${post.id})">
+                                    <div class="post-image">${emojis[idx % emojis.length]}</div>
+                                    <div class="post-content">
+                                        <span class="post-category">בלוג</span>
+                                        <h3 class="post-title">${post.title}</h3>
+                                        <p class="post-excerpt">${post.excerpt}</p>
+                                        <div class="post-meta">
+                                            <span>👁️ ${post.views} צפיות</span>
+                                            <span>📅 ${new Date(post.created_at).toLocaleDateString('he-IL')}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<p class="error">לא נמצאו פוסטים</p>';
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="error">
+                        <h2>❌ שגיאה בחיבור ל-API</h2>
+                        <p>ודא ש-Backend רץ על: ${API_URL}</p>
+                        <p>שגיאה: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function viewPost(id) {
+            alert(`צפייה בפוסט #${id}\n\nבאפליקציה המלאה - זה יפתח את הפוסט המלא 🚀`);
+        }
+
+        // Initialize
+        checkAPI();
+        loadPosts();
+        
+        // Refresh API status every 5 seconds
+        setInterval(checkAPI, 5000);
+    </script>
+</body>
+</html>
